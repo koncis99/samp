@@ -1,0 +1,17 @@
+- name: Build
+        run: |
+          cd samp-linux
+          cmake -B cmake-build .
+          cmake --build cmake-build/
+          
+      - name: Copy UI Files
+        run: |
+          # Menyalin file UI ke folder build agar ikut terbungkus
+          mkdir -p samp-linux/cmake-build/interface
+          cp -r samp-linux/usr/share/samp-linux/interface/* samp-linux/cmake-build/interface/
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: hasil-build-samp
+          path: samp-linux/cmake-build/
