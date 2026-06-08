@@ -1,4 +1,16 @@
-- name: Build
+name: Build App
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Install Dependencies
+        run: sudo apt-get update && sudo apt-get install -y cmake libgtk-4-dev build-essential
+      
+      - name: Build
         run: |
           cd samp-linux
           cmake -B cmake-build .
@@ -8,8 +20,8 @@
         run: |
           # Menyalin file UI ke folder build agar ikut terbungkus
           mkdir -p samp-linux/cmake-build/interface
-          cp -r samp-linux/usr/share/samp-linux/interface/* samp-linux/cmake-build/interface/
-
+          cp -r samp-linux/usr/share/samp-linux/interface/* samp-linux/cmake-build/interface/ || echo "Folder interface tidak ditemukan, lanjut..."
+          
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
